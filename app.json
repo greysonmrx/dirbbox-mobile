@@ -17,7 +17,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.dirbbox",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Este aplicativo usará opcionalmente o Face ID ou Touch ID para salvar o login"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
