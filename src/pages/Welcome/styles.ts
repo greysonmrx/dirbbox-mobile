@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { MaterialCommunityIcons, Fontisto } from '@expo/vector-icons'
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 import Button from '../../components/Button';
 
@@ -16,8 +17,7 @@ export const Background = styled.Image`
 `;
 
 export const Container = styled.View`
-  padding: 0 30px;
-  padding-top: 350px;
+  padding: 350px 30px ${getBottomSpace()}px;
 `;
 
 export const Content = styled.View`
