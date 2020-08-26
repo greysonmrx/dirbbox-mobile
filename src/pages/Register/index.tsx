@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import * as Yup from 'yup';
 import { Alert, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -6,6 +6,7 @@ import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 
 import Input from '../../components/Input';
+import ToggleBox from '../../components/ToggleBox';
 
 import getValidationErrors from '../../utils/getValidationErrors';
 
@@ -19,29 +20,34 @@ import {
   SubTitle,
   Title,
   Text,
-  ButtonLogin,
-  ButtonLoginText,
-  ButtonLoginIcon,
   ButtonRegister,
   ButtonRegisterText,
+  ButtonRegisterIcon,
+  ButtonBack,
+  ButtonBackText,
 } from './styles';
 
-interface SignInFormData {
+interface SignUpFormData {
+  name: string;
   email: string;
   password: string;
 }
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
 
-  const handleSignIn = useCallback(
-    async (data: SignInFormData) => {
+  const [storageValue, setStorageValue] = useState(10);
+
+  const handleSignUp = useCallback(
+    async (data: SignUpFormData) => {
       try {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
+          name: Yup.string().required('Nome é obrigatório'),
           email: Yup.string()
             .required('E-mail é obrigatório')
             .email('Digite um e-mail válido'),
@@ -50,7 +56,7 @@ const Login: React.FC = () => {
 
         await schema.validate(data, { abortEarly: false });
 
-        // Sign in
+        // Sign up
         console.log(data);
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
@@ -76,14 +82,25 @@ const Login: React.FC = () => {
       />
       <Container>
         <Content>
-          <SubTitle>Conectar no</SubTitle>
+          <SubTitle>Registrar no</SubTitle>
           <Title>Dirbbox</Title>
           <Text>
-            Entre com seus dados que você inseriu durante seu registro para entrar na aplicação.
+            Nos dê algumas informações suas para se registrar na melhor plataforma de armazenamento em nuvem!
           </Text>
         </Content>
-        <Form onSubmit={handleSignIn} ref={formRef}>
+        <Form onSubmit={handleSignUp} ref={formRef}>
           <Input 
+            autoCapitalize="words"
+            name="name"
+            label="Nome"
+            placeholder="Insira seu nome"
+            returnKeyType="next"
+            onSubmitEditing={() => {
+              emailInputRef.current?.focus();
+            }}
+          />
+          <Input 
+            ref={emailInputRef}
             autoCorrect={false}
             autoCapitalize="none"
             keyboardType="email-address"
@@ -101,20 +118,24 @@ const Login: React.FC = () => {
             label="Senha secreta"
             placeholder="Insira sua senha"
             secureTextEntry
-            returnKeyType="send"
-            onSubmitEditing={() => formRef.current?.submitForm()}
+            returnKeyType="next"
+          />
+          <ToggleBox 
+            label="Armazenamento"
+            value={storageValue}
+            onChange={setStorageValue}
           />
         </Form>
-        <ButtonLogin onPress={() => formRef.current?.submitForm()}>
-          <ButtonLoginText>Conectar</ButtonLoginText>
-          <ButtonLoginIcon />
-        </ButtonLogin>
-        <ButtonRegister type="text" onPress={() => navigation.goBack()}>
-          <ButtonRegisterText>Voltar</ButtonRegisterText>
+        <ButtonRegister onPress={() => formRef.current?.submitForm()}>
+          <ButtonRegisterText>Registrar</ButtonRegisterText>
+          <ButtonRegisterIcon />
         </ButtonRegister>
+        <ButtonBack type="text" onPress={() => navigation.goBack()}>
+          <ButtonBackText>Voltar</ButtonBackText>
+        </ButtonBack>
       </Container>
     </Scroll>
   );
 }
 
-export default Login;
+export default Register;

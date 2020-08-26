@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {
   supportedAuthenticationTypesAsync,
@@ -33,9 +33,9 @@ const Welcome: React.FC = () => {
 
   const [authenticationType, setAuthenticationType] = useState<number>(0);
 
-  function handleNavigateToLogin(): void {
-    navigation.navigate('Login');
-  }
+  const navigateToPage = useCallback((pageName: string) => {
+    navigation.navigate(pageName);
+  }, []);
 
   async function authenticate(): Promise<void> {
     const response = await authenticateAsync({ cancelLabel: 'Cancelar', disableDeviceFallback: true });
@@ -99,12 +99,12 @@ const Welcome: React.FC = () => {
               }
             </ButtonSmartLogin>
           }
-          <ButtonLogin onPress={handleNavigateToLogin}>
+          <ButtonLogin onPress={() => navigateToPage('Login')}>
             <ButtonLoginText>Conectar</ButtonLoginText>
             <ButtonLoginIcon />
           </ButtonLogin>
         </ButtonsContainer>
-        <ButtonRegister type="text" onPress={() => console.log('1')}>
+        <ButtonRegister type="text" onPress={() => navigateToPage('Register')}>
           <ButtonRegisterText>Criar uma conta</ButtonRegisterText>
         </ButtonRegister>
       </Container>
