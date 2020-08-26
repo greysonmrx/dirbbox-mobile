@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { supportedAuthenticationTypesAsync, hasHardwareAsync, authenticateAsync, isEnrolledAsync } from 'expo-local-authentication';
+import { useNavigation } from '@react-navigation/native';
+import {
+  supportedAuthenticationTypesAsync,
+  hasHardwareAsync,
+  authenticateAsync,
+  isEnrolledAsync
+} from 'expo-local-authentication';
 
 import BackgroundImage from '../../assets/background.png';
 
@@ -23,7 +29,13 @@ import {
 } from './styles';
 
 const Welcome: React.FC = () => {
+  const navigation = useNavigation();
+
   const [authenticationType, setAuthenticationType] = useState<number>(0);
+
+  function handleNavigateToLogin(): void {
+    navigation.navigate('Login');
+  }
 
   async function authenticate(): Promise<void> {
     const response = await authenticateAsync({ cancelLabel: 'Cancelar', disableDeviceFallback: true });
@@ -87,7 +99,7 @@ const Welcome: React.FC = () => {
               }
             </ButtonSmartLogin>
           }
-          <ButtonLogin onPress={() => console.log('1')}>
+          <ButtonLogin onPress={handleNavigateToLogin}>
             <ButtonLoginText>Conectar</ButtonLoginText>
             <ButtonLoginIcon />
           </ButtonLogin>
