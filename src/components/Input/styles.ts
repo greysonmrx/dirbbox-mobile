@@ -8,6 +8,7 @@ interface InputContainerProps {
 
 interface IconProps {
   isFocused: boolean;
+  hasValue: boolean;
 }
 
 export const Container = styled.View`
@@ -41,10 +42,10 @@ export const InputContainer = styled.View<InputContainerProps>`
 `;
 
 export const Icon = styled(Feather)<IconProps>`
-  margin-right: 16px;
+  margin-right: 7px;
   color: #EEF2FE;
   ${props =>
-    (props.isFocused) &&
+    (props.isFocused || props.hasValue) &&
     css`
       color: #22215B;
     `}
