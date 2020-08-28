@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import { AppLoading } from 'expo';
 import { StatusBar } from 'expo-status-bar';
-import { Platform, View, Text } from 'react-native';
+import { Platform } from 'react-native';
 import { loadAsync } from 'expo-font';
 
 import Routes from './src/routes';
+
+import { setNavigator } from './src/services/navigate';
 
 const customFonts = {
   'Gilroy-Light': require('./src/assets/fonts/Gilroy-Light.otf'),
@@ -29,14 +32,17 @@ function App() {
   }, []);
 
   if (!fontsLoaded) {
-    return <View><Text>Carregando</Text></View>
+    return <AppLoading />
   }
 
   return (
-    <>
+    <NavigationContainer ref={setNavigator}>
       <Routes />
-      <StatusBar style={Platform.select({ ios: 'dark', android: 'light' })} backgroundColor="#567DF4" />
-    </>
+      <StatusBar 
+        style={Platform.select({ ios: 'dark', android: 'light' })} 
+        backgroundColor="#567DF4"
+      />
+    </NavigationContainer>
   );
 }
 
