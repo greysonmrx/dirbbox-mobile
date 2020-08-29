@@ -139,6 +139,7 @@ const Profile: React.FC<ProfileProps> = ({ style }) => {
                 {
                   lastUploads.map(upload => (
                     <Upload 
+                      key={upload.id}
                       name={upload.name}
                       type={upload.type}
                       size={upload.size}

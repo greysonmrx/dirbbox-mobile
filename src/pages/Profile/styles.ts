@@ -15,7 +15,7 @@ export const Scroll = styled.ScrollView`
 export const ScrollContainer = styled.View`
   flex: 1;
   align-items: center;
-  padding: 0 30px 30px;
+  padding: 0 30px ${getBottomSpace() + 30}px;
 `;
 
 export const ProfileCard = styled.View`
@@ -25,7 +25,11 @@ export const ProfileCard = styled.View`
   align-items: center;
   border-radius: 20px;
   background-color: #FFFFFF;
-  elevation: 5;
+  elevation: 3;
+  shadow-color: #000000;
+  shadow-offset: 0px 0px;
+  shadow-opacity: 0.22;
+  shadow-radius: 2.22px;
 `;
 
 export const ProfileImage = styled.Image`
@@ -100,7 +104,7 @@ export const MyFoldersList = styled.View`
 
 export const RecentUploadsContainer = styled.View`
   width: 100%;
-  padding-top: 40px;
+  padding-top: 20px;
 `;
 
 export const RecentUploadsHeader = styled.View`
@@ -108,7 +112,7 @@ export const RecentUploadsHeader = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: ${getBottomSpace() + 30}px;
+  padding-bottom: 24px;
 `;
 
 export const RecentUploadsTitle = styled.Text`
@@ -128,8 +132,5 @@ export const RecentUploadsOptionsIcon = styled(Feather).attrs({
 `;
 
 export const RecentUploadsList = styled.View`
-  flex-direction: row;
-  flex-wrap: wrap;
   width: 100%;
-  justify-content: space-between;
 `;

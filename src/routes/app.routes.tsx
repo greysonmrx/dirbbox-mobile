@@ -21,10 +21,10 @@ const AppRoutes: React.FC = () => {
 
   const borderRadius = Animated.interpolate(progress, {
     inputRange: [0, 1],
-    outputRange: [0, 10],
+    outputRange: [0, 15],
   });
 
-  const animatedStyle = { borderRadius, transform: [{ scale }] };
+  const animatedStyle = { borderRadius, transform: [{ scale }], overflow: 'hidden' };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#F1F3F6' }}>
