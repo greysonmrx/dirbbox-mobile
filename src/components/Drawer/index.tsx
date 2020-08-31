@@ -1,5 +1,6 @@
-import React from 'react';
-import { DrawerContentComponentProps, DrawerContentOptions } from '@react-navigation/drawer';
+import React, { useState, useEffect } from 'react';
+import { Animated, Dimensions, Easing } from 'react-native';
+import { DrawerContentComponentProps, DrawerContentOptions, useIsDrawerOpen } from '@react-navigation/drawer';
 
 import profileImg from '../../assets/profile.png';
 
@@ -20,21 +21,75 @@ import {
   Version,
 } from './styles';
 
-const Drawer: React.FC<DrawerContentComponentProps<DrawerContentOptions>> = ({ navigation, state }) => {
+const Drawer: React.FC<DrawerContentComponentProps<DrawerContentOptions>> = ({ navigation, state, progress }) => {
+  const isDrawerOpen = useIsDrawerOpen();
+
+  const drawerWidth = Dimensions.get('window').width * 0.6
+
+  const [profile] = useState(new Animated.Value((drawerWidth) * -1));
+  const [items] = useState(new Animated.Value((drawerWidth) * -1));
+  const [bottom] = useState(new Animated.Value((drawerWidth) * -1));
+
+  useEffect(() => {
+    if (isDrawerOpen) {
+      Animated.parallel([
+        Animated.spring(profile, {
+          toValue: 0,
+          delay: 150,
+          useNativeDriver: true
+        }),
+        Animated.spring(items, {
+          toValue: 0,
+          delay: 250,
+          useNativeDriver: true
+        }),
+        Animated.spring(bottom, {
+          toValue: 0,
+          delay: 350,
+          useNativeDriver: true
+        })
+      ]).start();
+    } else {
+      Animated.parallel([
+        Animated.timing(profile, {
+          toValue: (drawerWidth) * -1,
+          duration: 100, 
+          useNativeDriver: true
+        }),
+        Animated.timing(items, {
+          toValue: (drawerWidth) * -1,
+          duration: 100, 
+          useNativeDriver: true
+        }),
+        Animated.timing(bottom, {
+          toValue: (drawerWidth) * -1,
+          duration: 100, 
+          useNativeDriver: true
+        })
+      ]).start();
+    }
+  }, [isDrawerOpen]);
+
   function isFocused(routeIndex: number) {
     return state.index === routeIndex;
   }
 
   return (
     <Container>
-      <ProfileContainer>
+      <ProfileContainer
+        as={Animated.View}
+        style={{ transform: [{ translateX: profile }] }}
+      >
         <ProfileImage source={profileImg}/>
         <ProfileInfo>
           <ProfileName>Greyson</ProfileName>
           <ProfileEmail>greysonmrx@gmail.com</ProfileEmail>
         </ProfileInfo>
       </ProfileContainer>
-      <ItemsContainer>
+      <ItemsContainer
+        as={Animated.View}
+        style={{ transform: [{ translateX: items }] }}
+      >
         <ItemButton 
           isSelected={isFocused(0)}
           onPress={() => navigation.navigate('Home')}
@@ -60,7 +115,10 @@ const Drawer: React.FC<DrawerContentComponentProps<DrawerContentOptions>> = ({ n
           <ItemLabel isSelected={isFocused(4)}>Ajuda</ItemLabel>
         </ItemButton>
       </ItemsContainer>
-      <BottomContainer>
+      <BottomContainer
+        as={Animated.View}
+        style={{ transform: [{ translateX: bottom }] }}
+      >
         <LogOutButton>
           <LogOutIcon />
           <LogOutText>Sair</LogOutText>

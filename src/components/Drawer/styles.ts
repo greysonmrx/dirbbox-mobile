@@ -12,6 +12,7 @@ export const Container = styled.View`
   flex: 1;
   justify-content: space-between;
   padding-bottom: ${getBottomSpace() + 30}px;
+  background: transparent;
 `;
 
 export const ProfileContainer = styled.View`
