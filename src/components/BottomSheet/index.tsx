@@ -23,7 +23,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ show, onClose, children }) =>
   });
 
   function openModal() {
-    Animated.sequence([
+    Animated.parallel([
       Animated.timing(state.containerPosition, {
         toValue: 0,
         duration: 0,
@@ -31,35 +31,37 @@ const BottomSheet: React.FC<BottomSheetProps> = ({ show, onClose, children }) =>
       }),
       Animated.timing(state.containerOpacity, {
         toValue: 1,
-        duration: 150,
+        duration: 300,
         useNativeDriver: true,
       }),
       Animated.timing(state.bottomSheetPosition, {
         toValue: 0,
-        duration: 150,
+        duration: 300,
         useNativeDriver: true,
       }),
     ]).start();
   }
 
   function closeModal() {
-    Animated.sequence([
+    Animated.parallel([
       Animated.timing(state.bottomSheetPosition, {
         toValue: 500,
-        duration: 150,
+        duration: 300,
         useNativeDriver: true,
       }),
       Animated.timing(state.containerOpacity, {
         toValue: 0,
-        duration: 150,
+        duration: 300,
         useNativeDriver: true,
-      }),
-      Animated.timing(state.containerPosition, {
-        toValue: height,
-        duration: 50,
-        useNativeDriver: true,
-      }),    
+      })
     ]).start();
+
+    Animated.timing(state.containerPosition, {
+      toValue: height,
+      duration: 0,
+      delay: 300,
+      useNativeDriver: true,
+    }).start();
   }
 
   useEffect(() => {

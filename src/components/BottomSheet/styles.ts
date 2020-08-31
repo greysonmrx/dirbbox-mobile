@@ -22,8 +22,7 @@ export const Content = styled.View`
   position: absolute;
   bottom: 0;
   width: 100%;
-  padding: 30px;
-  padding-bottom: ${getBottomSpace() + 30}px;
+  padding: 30px 0 ${getBottomSpace() + 30}px;
   background-color: #FFFFFF;
 `;
 
