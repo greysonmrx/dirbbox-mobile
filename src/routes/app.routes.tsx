@@ -16,7 +16,7 @@ const AppRoutes: React.FC = () => {
 
   const scale = Animated.interpolate(progress, {
     inputRange: [0, 1],
-    outputRange: [1, 0.6],
+    outputRange: [1, 0.7],
   });
 
   const borderRadius = Animated.interpolate(progress, {
@@ -24,21 +24,20 @@ const AppRoutes: React.FC = () => {
     outputRange: [0, 15],
   });
 
-  const animatedStyle = { borderRadius, transform: [{ scale }], overflow: 'hidden' };
+  const animatedStyle = { 
+    borderRadius, 
+    transform: [{ scale }], 
+    overflow: 'hidden'
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#F1F3F6' }}>
       <Drawer.Navigator 
         initialRouteName="Home"
-        drawerType="slide"
+        drawerType="back"
         edgeWidth={1}
         overlayColor="transparent"
         drawerStyle={{width: '60%', backgroundColor: 'transparent'}}
-        drawerContentOptions={{
-          activeBackgroundColor: 'transparent',
-          activeTintColor: 'white',
-          inactiveTintColor: 'white',
-        }}
         sceneContainerStyle={{ backgroundColor: 'transparent' }}
         drawerContent={props => {
           setProgress(props.progress);
