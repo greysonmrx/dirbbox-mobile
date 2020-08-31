@@ -1,5 +1,8 @@
 import React from 'react';
 
+import formatDate from '../../utils/formatDate';
+import formatSize from '../../utils/formatSize';
+
 import {
   Container,
   Content,
@@ -20,10 +23,10 @@ const Upload: React.FC<Upload> = ({ name, size, type, created_at }) => {
         </IconContainer>
         <DetailsContainer>
           <UploadName>{name}</UploadName>
-          <UploadDate>10 de dez de 2020</UploadDate>
+          <UploadDate>{formatDate(created_at)}</UploadDate>
         </DetailsContainer>
       </Content>
-      <UploadSize>{size}kb</UploadSize>
+      <UploadSize>{formatSize(size)}</UploadSize>
     </Container>
   );
 }

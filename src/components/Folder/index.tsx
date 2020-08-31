@@ -1,5 +1,7 @@
 import React from 'react';
 
+import formatDate from '../../utils/formatDate';
+
 import {
   Container,
   TopSide,
@@ -53,7 +55,7 @@ const Folder: React.FC<FolderProps> = ({ color = 'blue', name, mode, created_at 
       </TopSide>
       <BottomSide>
         <FolderName color={colors[color]}>{name}</FolderName>
-        <FolderDate color={colors[color]}>10 de dez de 2020</FolderDate>
+        <FolderDate color={colors[color]}>{formatDate(created_at)}</FolderDate>
       </BottomSide>
     </Container>
   )
