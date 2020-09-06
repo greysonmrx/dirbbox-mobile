@@ -33,7 +33,7 @@
 - **React Navigation** - Routing and navigation for your React Native apps.
 - **Axios** - Promise based HTTP client for the browser and node.js.
 - **React Native Gesture Handler** - Declarative API exposing platform native touch and gesture system to React Native.
-- **Unform** - A performance focused library that helps you creating beautiful forms in React with the power of uncontrolled components performance and React Hooks.
+- **Unform** - Easy peasy highly scalable ReactJS & React Native forms.
 - **Yup** - Dead simple Object schema validation.
 - **Date Fns** - Modern JavaScript date utility library.
 - **Expo Camera** - Provides a React component that renders a preview for the device's front or back camera.
