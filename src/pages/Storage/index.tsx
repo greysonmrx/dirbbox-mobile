@@ -52,7 +52,6 @@ const Storage: React.FC<StorageProps> = ({ style }) => {
       const response = await api.get('/storage');
 
       setStorage(response.data);
-      console.log(response.data);
     } catch (err) {
       Alert.alert(
         'Erro ao buscar armazenamento',

@@ -95,8 +95,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }: AuthProviderPro
   const signOut = useCallback(async () => {
     await AsyncStorage.multiRemove(['@Dirbbox:user', '@Dirbbox:token']);
 
-    setData({} as AuthState);
     setLogged(false);
+    setData({} as AuthState);
   }, []);
 
   const exitApp = useCallback(() => {
