@@ -1,6 +1,10 @@
 import styled from 'styled-components/native';
 import { Feather } from '@expo/vector-icons';
 
+interface IconContainerProps {
+  background: string;
+}
+
 export const Container = styled.TouchableOpacity`
   width: 100%;
   flex-direction: row;
@@ -13,19 +17,18 @@ export const Content = styled.View`
   flex-direction: row;
 `;
 
-export const IconContainer = styled.View`
+export const IconContainer = styled.View<IconContainerProps>`
   margin-right: 10px;
   justify-content: center;
   align-items: center;
   border-radius: 21px;
-  background-color: #EEF7FE;
+  background-color: ${({ background }) => background};
   width: 42px;
   height: 42px;
 `;
 
 export const UploadIcon = styled(Feather)`
   font-size: 22px;
-  color: #567DF4;
 `;
 
 export const DetailsContainer = styled.View`
