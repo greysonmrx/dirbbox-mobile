@@ -101,7 +101,7 @@ const ShowUploads: React.FC<ShowUploadsProps> = ({ style }) => {
         err.response?.data.message || 'Ocorreu um erro ao tentar enviar arquivo.'
       );
     }
-  }, []);
+  }, [id]);
 
   const handleRemoveUpload = useCallback(async () => {
     try {
@@ -116,7 +116,7 @@ const ShowUploads: React.FC<ShowUploadsProps> = ({ style }) => {
     } finally {
       optionsBottomSheetRef.current?.close();
     }
-  }, []);
+  }, [uploads, currentUpload]);
 
   const handleEditUpload = useCallback(
     async ({ uploadName }: { uploadName: string; }) => {
@@ -136,7 +136,7 @@ const ShowUploads: React.FC<ShowUploadsProps> = ({ style }) => {
       editUploadFormRef.current?.reset();
       editUploadModalRef.current?.close();
     }
-  }, [id]);
+  }, [currentUpload, id]);
 
   const handleCancelEditUpload = useCallback(() => {
     Keyboard.dismiss();

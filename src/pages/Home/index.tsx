@@ -148,7 +148,7 @@ const Home: React.FC<HomeProps> = ({ style }) => {
         editFolderFormRef.current?.reset();
         modalEditFolderRef.current?.close();
       }
-  }, []);
+  }, [currentFolder]);
 
   const handleRemoveFolder = useCallback(async () => {
       try {
