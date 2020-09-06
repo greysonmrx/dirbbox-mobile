@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 
 import {
@@ -10,16 +10,25 @@ import {
 
 interface HeaderProps {
   title: string;
+  onBack?(): void;
 }
 
-const Header: React.FC<HeaderProps> = ({ title }) => {
+const Header: React.FC<HeaderProps> = ({ title, onBack }) => {
   const navigation = useNavigation();
+
+  const handleGoBack = useCallback(() => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      navigation.navigate('Home');
+    }
+  }, []);
 
   return (
     <Container>
       <HeaderButton 
         hitSlop={{ top: 20, right: 20, bottom: 20, left: 20,  }}
-        onPress={() => navigation.goBack()}  
+        onPress={onBack || handleGoBack}  
       >
         <HeaderIcon name="keyboard-arrow-left"/>
       </HeaderButton>
