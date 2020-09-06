@@ -87,7 +87,7 @@ export const LogOutText = styled.Text`
   font-size: 16px;
   font-family: 'Gilroy-Bold';
   color: #1B1D28;
-  margin-top: ${Platform.OS === 'ios' ? 6 : 0}px;
+  margin-top: ${Platform.OS === 'ios' ? 7 : 0}px;
 `;
 
 export const Version = styled.Text`

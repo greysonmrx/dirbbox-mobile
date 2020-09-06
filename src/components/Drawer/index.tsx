@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Animated, Dimensions, Easing } from 'react-native';
 import { DrawerContentComponentProps, DrawerContentOptions, useIsDrawerOpen } from '@react-navigation/drawer';
 
+import { useAuth } from '../../hooks/auth';
+
 import profileImg from '../../assets/profile.png';
 
 import { 
@@ -22,6 +24,7 @@ import {
 } from './styles';
 
 const Drawer: React.FC<DrawerContentComponentProps<DrawerContentOptions>> = ({ navigation, state, progress }) => {
+  const { user, signOut } = useAuth();
   const isDrawerOpen = useIsDrawerOpen();
 
   const drawerWidth = Dimensions.get('window').width * 0.6
@@ -82,8 +85,8 @@ const Drawer: React.FC<DrawerContentComponentProps<DrawerContentOptions>> = ({ n
       >
         <ProfileImage source={profileImg}/>
         <ProfileInfo>
-          <ProfileName>Greyson</ProfileName>
-          <ProfileEmail>greysonmrx@gmail.com</ProfileEmail>
+          <ProfileName>{user.name.split(' ')[0]}</ProfileName>
+          <ProfileEmail>{user.email}</ProfileEmail>
         </ProfileInfo>
       </ProfileContainer>
       <ItemsContainer
@@ -91,10 +94,10 @@ const Drawer: React.FC<DrawerContentComponentProps<DrawerContentOptions>> = ({ n
         style={{ transform: [{ translateX: items }] }}
       >
         <ItemButton 
-          isSelected={isFocused(0)}
+          isSelected={isFocused(0) || isFocused(8)}
           onPress={() => navigation.navigate('Home')}
         >
-          <ItemLabel  isSelected={isFocused(0)}>Início</ItemLabel>
+          <ItemLabel  isSelected={isFocused(0) || isFocused(8)}>Início</ItemLabel>
         </ItemButton>
         <ItemButton 
           isSelected={isFocused(1)}
@@ -108,10 +111,22 @@ const Drawer: React.FC<DrawerContentComponentProps<DrawerContentOptions>> = ({ n
         >
           <ItemLabel isSelected={isFocused(2)}>Armazenamento</ItemLabel>
         </ItemButton>
-        <ItemButton isSelected={isFocused(3)}>
-          <ItemLabel isSelected={isFocused(3)}>Configurações</ItemLabel>
+        <ItemButton 
+          isSelected={
+            isFocused(3) || isFocused(5) || isFocused(6) || isFocused(7)
+          }
+          onPress={() => navigation.navigate('Settings')}
+        >
+          <ItemLabel isSelected={
+            isFocused(3) || isFocused(5) || isFocused(6) || isFocused(7)
+          }>
+            Configurações
+          </ItemLabel>
         </ItemButton>
-        <ItemButton isSelected={isFocused(4)}>
+        <ItemButton 
+          isSelected={isFocused(4)}
+          onPress={() => navigation.navigate('Help')}
+        >
           <ItemLabel isSelected={isFocused(4)}>Ajuda</ItemLabel>
         </ItemButton>
       </ItemsContainer>
@@ -119,7 +134,9 @@ const Drawer: React.FC<DrawerContentComponentProps<DrawerContentOptions>> = ({ n
         as={Animated.View}
         style={{ transform: [{ translateX: bottom }] }}
       >
-        <LogOutButton>
+        <LogOutButton
+          onPress={signOut}
+        >
           <LogOutIcon />
           <LogOutText>Sair</LogOutText>
         </LogOutButton>
