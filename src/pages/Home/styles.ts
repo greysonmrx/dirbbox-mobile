@@ -110,8 +110,7 @@ export const CreateButtonICon = styled(Entypo).attrs({
 
 export const BottomSheetContent = styled.View`
   width: 100%;
-  padding-top: 25px;
-  padding-bottom: 5px;
+  padding: 25px 30px 5px;
   flex-direction: row;
   justify-content: space-between;
 `;
@@ -140,5 +139,21 @@ export const BottomSheetIcon = styled(Feather)`
 export const BottomSheetText = styled.Text`
   color: #7B7F9E;
   font-size: 12px;
-  font-family: 'Gilroy-Semibold'
+  font-family: 'Gilroy-Semibold';
+`;
+
+export const ButtonsContainer = styled.View`
+  width: 100%;
+  flex-direction: row;
+  justify-content: flex-end;
+`;
+
+export const ModalButton = styled.TouchableOpacity`
+  padding: 0 15px;
+`;
+
+export const ModalButtonText = styled.Text`
+  font-family: 'Gilroy-Semibold';
+  font-size: 12px;
+  color: #567DF4;
 `;
