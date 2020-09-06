@@ -6,6 +6,12 @@ import { View } from 'react-native';
 import Home from '../pages/Home';
 import Profile from '../pages/Profile';
 import Storage from '../pages/Storage';
+import Settings from '../pages/Settings';
+import Help from '../pages/Help';
+import ChangePassword from '../pages/ChangePassword';
+import EditProfile from '../pages/EditProfile';
+import UpgradePlan from '../pages/UpgradePlan';
+import ShowUploads from '../pages/ShowUploads';
 
 import DrawerComponent from '../components/Drawer';
 
@@ -52,6 +58,24 @@ const AppRoutes: React.FC = () => {
         </Drawer.Screen>
         <Drawer.Screen name="Storage">
           {props => <Storage {...props} style={animatedStyle} />}
+        </Drawer.Screen>
+        <Drawer.Screen name="Settings">
+          {props => <Settings {...props} style={animatedStyle} />}
+        </Drawer.Screen>
+        <Drawer.Screen name="Help">
+          {props => <Help {...props} style={animatedStyle} />}
+        </Drawer.Screen>
+        <Drawer.Screen name="ChangePassword">
+          {props => <ChangePassword {...props} style={animatedStyle} />}
+        </Drawer.Screen>
+        <Drawer.Screen name="EditProfile">
+          {props => <EditProfile {...props} style={animatedStyle} />}
+        </Drawer.Screen>
+        <Drawer.Screen name="UpgradePlan">
+          {props => <UpgradePlan {...props} style={animatedStyle} />}
+        </Drawer.Screen>
+        <Drawer.Screen name="ShowUploads">
+          {props => <ShowUploads {...props} style={animatedStyle} />}
         </Drawer.Screen>
       </Drawer.Navigator>
     </View>
