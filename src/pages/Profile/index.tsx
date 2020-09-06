@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Animated from 'react-native-reanimated';
+import { Alert } from 'react-native';
 
 import Header from '../../components/Header';
 import Folder from '../../components/Folder';
 import Upload from '../../components/Upload';
+
+import { useAuth } from '../../hooks/auth';
+
+import api from '../../services/api';
 
 import profileImg from '../../assets/profile.png';
 
@@ -40,57 +45,43 @@ interface ProfileProps {
 }
 
 const Profile: React.FC<ProfileProps> = ({ style }) => {
-  const folders: Folder[] = [
-    {
-      id: 1,
-      name: 'Mobile Apps',
-      created_at: new Date(),
-      color: 'blue'
-    },{
-      id: 2,
-      name: 'SVG Icons',
-      created_at: new Date(),
-      color: 'yellow'
-    },{
-      id: 3,
-      name: 'Prototypes',
-      created_at: new Date(),
-      color: 'red'
-    },{
-      id: 4,
-      name: 'Avatars',
-      created_at: new Date(),
-      color: 'green'
-    }
-  ];
+  const { user } = useAuth();
 
-  const lastUploads: Upload[] = [
-    {
-      id: 1,
-      name: 'Projects.docx',
-      created_at: new Date(),
-      type: 'docx',
-      size: 310,
-    },{
-      id: 2,
-      name: 'profile.png',
-      created_at: new Date(),
-      type: 'png',
-      size: 1826,
-    },{
-      id: 3,
-      name: 'movie.mp4',
-      created_at: new Date(),
-      type: 'mp4',
-      size: 2257832,
-    },{
-      id: 4,
-      name: 'Projects.zip',
-      created_at: new Date(),
-      type: 'zip',
-      size: 2091,
+  const name = `${user.name.split(' ')[0]} ${user.name.split(' ')[1]}`;
+
+  const [folders, setFolders] = useState<Folder[]>([]);
+  const [uploads, setUploads] = useState<Upload[]>([]);
+
+  const handleGetFolders = useCallback(async () => {
+    try {
+      const response = await api.get('/folders?limit=4');
+
+      setFolders(response.data);
+    } catch (err) {
+      Alert.alert(
+        'Erro ao buscar pastas', 
+        err.response?.data.message || 'Ocorreu um erro ao tentar buscar pastas.'
+      );
+    } 
+  }, []);
+
+  const handleGetUploads = useCallback(async () => {
+    try {
+      const response = await api.get('/uploads/4');
+
+      setUploads(response.data);
+    } catch (err) {
+      Alert.alert(
+        'Erro ao buscar arquivos', 
+        err.response?.data.message || 'Ocorreu um erro ao tentar buscar arquivos.'
+      );
     }
-  ];
+  }, []);
+
+  useEffect(() => {
+    handleGetFolders();
+    handleGetUploads();
+  }, []);
 
   return (
       <Container 
@@ -102,8 +93,8 @@ const Profile: React.FC<ProfileProps> = ({ style }) => {
           <ScrollContainer>
             <ProfileCard>
               <ProfileImage source={profileImg}/>
-              <ProfileName>Greyson Mascarenhas</ProfileName>
-              <ProfileEmail>greysonmrx@gmail.com</ProfileEmail>
+              <ProfileName>{name}</ProfileName>
+              <ProfileEmail>{user.email}</ProfileEmail>
               <ProfileDescription>Você está utilizando a melhor plataforma de armazenamento de arquivos em nuvem para gerenciar seus dados.</ProfileDescription>
             </ProfileCard>
             <MyFoldersContainer>
@@ -119,10 +110,13 @@ const Profile: React.FC<ProfileProps> = ({ style }) => {
                   folders.map(folder => (
                     <Folder 
                       key={folder.id}
+                      id={folder.id}
                       name={folder.name}
                       mode='grid'
                       color={folder.color}
                       created_at={folder.created_at}
+                      onShowOptions={() => Alert.alert('Show all options')}
+                      onShowUploads={() => Alert.alert('Show all uploads')}
                     />
                   ))
                 }
@@ -137,13 +131,15 @@ const Profile: React.FC<ProfileProps> = ({ style }) => {
               </RecentUploadsHeader>
               <RecentUploadsList>
                 {
-                  lastUploads.map(upload => (
+                  uploads.map(upload => (
                     <Upload 
                       key={upload.id}
+                      id={upload.id}
                       name={upload.name}
                       type={upload.type}
                       size={upload.size}
                       created_at={upload.created_at}
+                      onShowOptions={() => Alert.alert('Show all options')}
                     />
                   ))
                 }
