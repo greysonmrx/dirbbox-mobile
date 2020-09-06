@@ -7,6 +7,10 @@ import { FormHandles } from '@unform/core';
 
 import Input from '../../components/Input';
 
+import { useAuth } from '../../hooks/auth';
+
+import api from '../../services/api';
+
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import BackgroundImage from '../../assets/background.png';
@@ -32,6 +36,8 @@ interface SignInFormData {
 }
 
 const Login: React.FC = () => {
+  const { signIn } = useAuth();
+
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
@@ -50,8 +56,10 @@ const Login: React.FC = () => {
 
         await schema.validate(data, { abortEarly: false });
 
-        // Sign in
-        console.log(data);
+        await signIn({
+          email: data.email,
+          password: data.password,
+        });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -62,7 +70,7 @@ const Login: React.FC = () => {
 
         Alert.alert(
           'Erro na autenticação',
-          'Ocorreu um error ao fazer login, cheque as credenciais.',
+          err.response.data.message
         );
       }
     },
