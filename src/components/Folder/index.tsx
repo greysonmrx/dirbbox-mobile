@@ -1,4 +1,5 @@
 import React from 'react';
+import { parseISO } from 'date-fns';
 
 import formatDate from '../../utils/formatDate';
 
@@ -13,21 +14,22 @@ import {
   FolderDate,
 } from './styles';
 
-interface FolderProps {
-  color?: 'blue' | 'green' | 'yellow' | 'red';
+interface FolderProps extends Folder{
   mode: 'list' | 'grid';
-  name: string;
-  created_at: Date;
+  onShowUploads(folder: Folder): void;
+  onShowOptions(folder: Folder): void;
 }
 
 interface IColors {
-  blue: any;
-  yellow: any;
-  red: any;
-  green: any;
+  blue: string;
+  yellow: string;
+  red: string;
+  green: string;
 }
 
-const Folder: React.FC<FolderProps> = ({ color = 'blue', name, mode, created_at }) => {
+const Folder: React.FC<FolderProps> = ({ 
+  id, color = 'blue', name, mode, created_at, onShowUploads, onShowOptions
+}) => {
   const folderImages: IColors = {
     blue: require('../../assets/icons/blue_folder.png'),
     yellow: require('../../assets/icons/yellow_folder.png'),
@@ -43,11 +45,15 @@ const Folder: React.FC<FolderProps> = ({ color = 'blue', name, mode, created_at 
   }
 
   return (
-    <Container color={color} mode={mode}>
+    <Container 
+      color={color}
+      mode={mode}
+      onPress={() => onShowUploads({ id, name, color, created_at })}
+    >
       <TopSide>
         <FolderImage source={folderImages[color]} />
         <OptionButton
-          onPress={() => {}}
+          onPress={() => onShowOptions({ id, name, color, created_at })}
           hitSlop={{ top: 10, right: 10, bottom: 10, left: 10 }}
         >
           <OptionIcon color={colors[color]}/>
@@ -55,7 +61,7 @@ const Folder: React.FC<FolderProps> = ({ color = 'blue', name, mode, created_at 
       </TopSide>
       <BottomSide>
         <FolderName color={colors[color]}>{name}</FolderName>
-        <FolderDate color={colors[color]}>{formatDate(created_at)}</FolderDate>
+        <FolderDate color={colors[color]}>{formatDate(parseISO(created_at))}</FolderDate>
       </BottomSide>
     </Container>
   )
