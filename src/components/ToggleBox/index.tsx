@@ -1,5 +1,7 @@
 import React from 'react';
 
+import formatSize from '../../utils/formatSize';
+
 import { 
   Container,
   Label,
@@ -12,10 +14,14 @@ import {
 interface ToggleBox {
   label?: string;
   value: number;
+  boxSize?: "normal" | "big";
   onChange(value: number): void;
 }
 
-const ToggleBox: React.FC<ToggleBox> = ({ label, value, onChange }) => {
+const ToggleBox: React.FC<ToggleBox> = ({ label, value, boxSize = 'normal', onChange }) => {
+  const firstOptionValue = 10737418240;
+  const secondOptionValue = 26843545600;
+
   return (
     <Container>
       {
@@ -23,25 +29,39 @@ const ToggleBox: React.FC<ToggleBox> = ({ label, value, onChange }) => {
       }
       <BoxesContainer>
         <BoxContainer 
-          isSelected={value === 10}
-          onPress={() => onChange(10)}
+          boxSize={boxSize}
+          isSelected={value === firstOptionValue}
+          onPress={() => onChange(firstOptionValue)}
         >
           <BoxIcon 
-            isSelected={value === 10} 
+            boxSize={boxSize}
+            isSelected={value === firstOptionValue} 
             name="save"
           />
-          <BoxText isSelected={value === 10}>10 GB</BoxText>
+          <BoxText 
+            boxSize={boxSize}
+            isSelected={value === firstOptionValue}
+          >
+            {formatSize(firstOptionValue)}
+          </BoxText>
         </BoxContainer>
         <BoxContainer 
-          isSelected={value === 25}
-          onPress={() => onChange(25)}
+          boxSize={boxSize}
+          isSelected={value === secondOptionValue}
+          onPress={() => onChange(secondOptionValue)}
         >
           <BoxIcon 
-            isSelected={value === 25} 
+            boxSize={boxSize}
+            isSelected={value === secondOptionValue} 
             name="server"
           />
-          <BoxText isSelected={value === 25}>25 GB</BoxText>
-        </BoxContainer>
+          <BoxText 
+            boxSize={boxSize}
+            isSelected={value === secondOptionValue}
+          >
+            {formatSize(secondOptionValue)}
+          </BoxText>
+        </BoxContainer>     
       </BoxesContainer>
     </Container>
   );

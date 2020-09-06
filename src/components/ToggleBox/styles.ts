@@ -6,14 +6,17 @@ const { width } = Dimensions.get('window');
 
 interface BoxContainerProps {
   isSelected: boolean;
+  boxSize: "normal" | "big";
 }
 
 interface BoxIconProps {
   isSelected: boolean;
+  boxSize: "normal" | "big";
 }
 
 interface BoxTextProps {
-  isSelected: boolean;
+  isSelected: boolean;  
+  boxSize: "normal" | "big";
 }
 
 export const Container = styled.View`
@@ -33,30 +36,28 @@ export const BoxesContainer = styled.View`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 50px;
 `;
 
 export const BoxContainer = styled.TouchableOpacity<BoxContainerProps>`
   width: ${width / 2 - 45}px;
-  height: 100%;
-  flex-direction: row;
+  height: ${({ boxSize }) => boxSize === "normal" ? 50 : width / 2 - 45}px;
+  flex-direction: ${({ boxSize }) => boxSize === "normal" ? 'row' : 'column'};
   justify-content: center;
   align-items: center;
   background-color: ${({ isSelected }) => isSelected ? "rgba(86,125,244, 0.05)" : 'transparent'};
-  border: 1px solid ${({ isSelected }) => isSelected ? '#567DF4' : '#EEF2FE'};
-  font-size: 16px;
-  font-family: 'Gilroy-Medium';
+  border-color: ${({ isSelected }) => isSelected ? '#567DF4' : '#EEF2FE'};
+  border-width: ${({ boxSize }) => boxSize === "normal" ? 1 : 2}px;
   border-radius: 10px;
 `;
 
 export const BoxIcon = styled(Feather)<BoxIconProps>`
   color: ${({ isSelected }) => isSelected ? '#567DF4' : '#C7C7CD'};
-  font-size: 20px;
-  margin-right: 10px;
+  font-size: ${({ boxSize }) => boxSize === "normal" ? 20 : 40}px;
+  margin-right: ${({ boxSize }) => boxSize === "normal" ? 10 : 0}px;
 `;
 
 export const BoxText = styled.Text<BoxTextProps>`
   color: ${({ isSelected }) => isSelected ? '#567DF4' : '#C7C7CD'};
-  font-size: 16px;
+  font-size: ${({ boxSize }) => boxSize === "normal" ? 16 : 18}px;
   font-family: 'Gilroy-Semibold';
 `;  
