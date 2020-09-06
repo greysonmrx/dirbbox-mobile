@@ -6,6 +6,9 @@ import {
   authenticateAsync,
   isEnrolledAsync
 } from 'expo-local-authentication';
+import { Alert } from 'react-native';
+
+import { useAuth } from '../../hooks/auth';
 
 import BackgroundImage from '../../assets/background.png';
 
@@ -29,6 +32,7 @@ import {
 } from './styles';
 
 const Welcome: React.FC = () => {
+  const { user, logIn } = useAuth();
   const navigation = useNavigation();
 
   const [authenticationType, setAuthenticationType] = useState<number>(0);
@@ -41,9 +45,9 @@ const Welcome: React.FC = () => {
     const response = await authenticateAsync({ cancelLabel: 'Cancelar', disableDeviceFallback: true });
 
     if (response.success) {
-      // Login in to the app
+      logIn();
     } else {
-      // Shows an error
+      Alert.alert('Erro na autenticação');
     }
   }
 
@@ -82,22 +86,24 @@ const Welcome: React.FC = () => {
         </Content>
         <ButtonsContainer>
           {
-            authenticationType !== 0 &&
-            <ButtonSmartLogin type="secondary" onPress={authenticate}>
-              {
-                authenticationType === 1 ? (
-                  <>
-                    <ButtonSmartLoginIcon name="fingerprint" size={30} />
-                    <ButtonSmartLoginText>Touch Id</ButtonSmartLoginText>
-                  </>
-                ) : (
+            user && (
+              authenticationType !== 0 &&
+              <ButtonSmartLogin type="secondary" onPress={authenticate}>
+                {
+                  authenticationType === 1 ? (
                     <>
-                      <ButtonSmartLoginIcon name="face-recognition" size={25} style={{ marginRight: 10 }} />
-                      <ButtonSmartLoginText>Face Id</ButtonSmartLoginText>
+                      <ButtonSmartLoginIcon name="fingerprint" size={30} />
+                      <ButtonSmartLoginText>Touch Id</ButtonSmartLoginText>
                     </>
-                  )
-              }
-            </ButtonSmartLogin>
+                  ) : (
+                      <>
+                        <ButtonSmartLoginIcon name="face-recognition" size={25} style={{ marginRight: 10 }} />
+                        <ButtonSmartLoginText>Face Id</ButtonSmartLoginText>
+                      </>
+                    )
+                }
+              </ButtonSmartLogin>
+            )
           }
           <ButtonLogin onPress={() => navigateToPage('Login')}>
             <ButtonLoginText>Conectar</ButtonLoginText>

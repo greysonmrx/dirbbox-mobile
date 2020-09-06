@@ -49,7 +49,9 @@ export const ButtonsContainer = styled.View`
   padding: 40px 0;
 `;
 
-export const ButtonSmartLogin = styled(Button)``;
+export const ButtonSmartLogin = styled(Button)`
+  margin-bottom: 20px;
+`;
 
 export const ButtonSmartLoginText = styled.Text`
   font-size: 16px;
@@ -62,9 +64,7 @@ export const ButtonSmartLoginIcon = styled(MaterialCommunityIcons)`
   margin-right: 5px;
 `;
 
-export const ButtonLogin = styled(Button)`
-  margin-top: 20px;
-`;
+export const ButtonLogin = styled(Button)``;
 
 export const ButtonLoginText = styled.Text`
   font-size: 16px;

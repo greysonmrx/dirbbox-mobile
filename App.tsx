@@ -6,6 +6,7 @@ import { Platform } from 'react-native';
 import { loadAsync } from 'expo-font';
 
 import Routes from './src/routes';
+import AppProvider from './src/hooks';
 
 import { setNavigator } from './src/services/navigate';
 
@@ -37,11 +38,13 @@ function App() {
 
   return (
     <NavigationContainer ref={setNavigator}>
-      <Routes />
       <StatusBar 
         style={Platform.select({ ios: 'dark', android: 'light' })} 
         backgroundColor="#567DF4"
       />
+      <AppProvider>
+        <Routes />
+      </AppProvider>
     </NavigationContainer>
   );
 }
