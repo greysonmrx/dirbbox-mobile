@@ -1,6 +1,8 @@
 import styled from 'styled-components/native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 
+import Button from '../../components/Button';
+
 interface BallProps {
   color: string;
 }
@@ -48,8 +50,7 @@ export const StorageTotal = styled.Text`
 `;
 
 export const FilesTypesDetails = styled.View`
-  padding: 30px;
-  padding-bottom: ${getBottomSpace()}px;
+  padding: 30px 30px 0;
 `;
 
 export const FileTypeContainer = styled.View`
@@ -88,4 +89,14 @@ export const FileTypeSize = styled.Text`
   font-family: 'Gilroy-Medium';
   color: #22215B;
   opacity: 0.6;
+`;
+
+export const RefreshDataButton = styled(Button)`
+  margin-bottom: ${getBottomSpace() + 20}px;
+`;
+
+export const RefreshDataButtonText = styled.Text`
+  font-size: 16px;
+  color: #1B1D28;
+  font-family: 'Gilroy-Regular';
 `;

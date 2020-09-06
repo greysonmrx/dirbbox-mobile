@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Animated from 'react-native-reanimated';
+import { Alert } from 'react-native';
 
 import ProgressBar from '../../components/ProgressBar';
 import Doughnut from '../../components/Doughnut';
 import Header from '../../components/Header';
+
+import api from '../../services/api';
 
 import formatSize from '../../utils/formatSize';
 
@@ -22,7 +25,15 @@ import {
   FileTypeContent,
   FileTypeName,
   FileTypeSize,
+  RefreshDataButton,
+  RefreshDataButtonText,
 } from './styles';
+
+interface Storage {
+  total: number;
+  remaining: number;
+  data: number[];
+}
 
 interface StorageProps {
   style: {
@@ -34,10 +45,28 @@ interface StorageProps {
 }
 
 const Storage: React.FC<StorageProps> = ({ style }) => {
-  const storage = {
-    total: 31000000,
-    remaining: 11160000,
-    data: [ 7.34, 3.30, 2.06, 6.66]
+  const [storage, setStorage] = useState<Storage>();
+
+  const handleGetStorage = useCallback(async () => {
+    try {
+      const response = await api.get('/storage');
+
+      setStorage(response.data);
+      console.log(response.data);
+    } catch (err) {
+      Alert.alert(
+        'Erro ao buscar armazenamento',
+        err.response?.data.message || 'Ocorreu um erro ao tentar buscar armazenamento.'
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    handleGetStorage();
+  }, []);
+
+  if (!storage?.total) {
+    return null;
   }
 
   return (
@@ -61,12 +90,18 @@ const Storage: React.FC<StorageProps> = ({ style }) => {
               <Ball color="#22215B"/>
               <FileTypeContent>
                 <FileTypeName>Programação</FileTypeName>
-                <FileTypeSize>7.34 GB</FileTypeSize>
+                <FileTypeSize>
+                  {
+                    storage.data[0] 
+                      ? formatSize(storage.data[0], 2)
+                      : "0.00 Bytes"
+                  }
+                </FileTypeSize>
               </FileTypeContent>
             </FirstContent>
             <ProgressBar 
               color="#22215B"
-              progress={36}
+              progress={storage.data[0] / storage.total * 100}
             />
           </FileTypeContainer>
           <FileTypeContainer>
@@ -74,12 +109,18 @@ const Storage: React.FC<StorageProps> = ({ style }) => {
               <Ball color="#FFC700"/>
               <FileTypeContent>
                 <FileTypeName>Imagens</FileTypeName>
-                <FileTypeSize>6.66 GB</FileTypeSize>
+                <FileTypeSize>
+                  {
+                    storage.data[1] 
+                      ? formatSize(storage.data[1], 2)
+                      : "0.00 Bytes"
+                  }
+                </FileTypeSize>
               </FileTypeContent>
             </FirstContent>
             <ProgressBar 
               color="#FFC700" 
-              progress={20}
+              progress={storage.data[1] / storage.total * 100}
             />
           </FileTypeContainer>
           <FileTypeContainer>
@@ -87,12 +128,18 @@ const Storage: React.FC<StorageProps> = ({ style }) => {
               <Ball color="#4CE364"/>
               <FileTypeContent>
                 <FileTypeName>Vídeos</FileTypeName>
-                <FileTypeSize>38.66 GB</FileTypeSize>
+                <FileTypeSize>
+                  {
+                    storage.data[2] 
+                      ? formatSize(storage.data[2], 2)
+                      : "0.00 Bytes"
+                  }
+                </FileTypeSize>
               </FileTypeContent>
             </FirstContent>
             <ProgressBar 
               color="#4CE364" 
-              progress={8}
+              progress={storage.data[2] / storage.total * 100}
             />
           </FileTypeContainer>
           <FileTypeContainer>
@@ -100,12 +147,18 @@ const Storage: React.FC<StorageProps> = ({ style }) => {
               <Ball color="#567DF4"/>
               <FileTypeContent>
                 <FileTypeName>Documentos</FileTypeName>
-                <FileTypeSize>38.66 GB</FileTypeSize>
+                <FileTypeSize>
+                  {
+                    storage.data[3] 
+                      ? formatSize(storage.data[3], 2)
+                      : "0.00 Bytes"
+                  }
+                </FileTypeSize>
               </FileTypeContent>
             </FirstContent>
             <ProgressBar 
               color="#567DF4" 
-              progress={34}
+              progress={storage.data[3] / storage.total * 100}
             />
           </FileTypeContainer>
           <FileTypeContainer>
@@ -113,15 +166,27 @@ const Storage: React.FC<StorageProps> = ({ style }) => {
               <Ball color="#FF842A"/>
               <FileTypeContent>
                 <FileTypeName>Outros</FileTypeName>
-                <FileTypeSize>38.66 GB</FileTypeSize>
+                <FileTypeSize>
+                  {
+                    storage.data[4] 
+                      ? formatSize(storage.data[4], 2)
+                      : "0.00 Bytes"
+                  }
+                </FileTypeSize>
               </FileTypeContent>
             </FirstContent>
             <ProgressBar 
               color="#FF842A" 
-              progress={12}
+              progress={storage.data[4] / storage.total * 100}
             />
           </FileTypeContainer>
         </FilesTypesDetails>
+        <RefreshDataButton 
+          type="text"
+          onPress={handleGetStorage}
+        >
+          <RefreshDataButtonText>Atualizar dados</RefreshDataButtonText>
+        </RefreshDataButton>
       </Scroll>
     </Container>
   );
