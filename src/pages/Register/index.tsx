@@ -8,6 +8,8 @@ import { FormHandles } from '@unform/core';
 import Input from '../../components/Input';
 import ToggleBox from '../../components/ToggleBox';
 
+import api from '../../services/api';
+
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import BackgroundImage from '../../assets/background.png';
@@ -39,7 +41,7 @@ const Register: React.FC = () => {
   const passwordInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
 
-  const [storageValue, setStorageValue] = useState(10);
+  const [storageValue, setStorageValue] = useState(10737418240);
 
   const handleSignUp = useCallback(
     async (data: SignUpFormData) => {
@@ -56,8 +58,17 @@ const Register: React.FC = () => {
 
         await schema.validate(data, { abortEarly: false });
 
-        // Sign up
-        console.log(data);
+        await api.post('/users', {
+          ...data,
+          storage: storageValue
+        });
+
+        Alert.alert(
+          'Cadastro realizado com sucesso!',
+          'Você ja pode fazer login na aplicação.',
+        );
+
+        navigation.navigate('Login');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -68,11 +79,11 @@ const Register: React.FC = () => {
 
         Alert.alert(
           'Erro na autenticação',
-          'Ocorreu um error ao fazer login, cheque as credenciais.',
+          err.response.data.message,
         );
       }
     },
-    [],
+    [storageValue],
   );
 
   return (
